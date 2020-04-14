@@ -1,13 +1,22 @@
-# KeystoneJS Starter Template
+# Dev Environment Setup
 
-You've created a KeystoneJS project! This project contains a simple list of users and an admin application (`localhost:3000/admin`) with basic authentication.
+You will need at least:
+yarn: 1.19.1
+npm: 6.12.0
+node: 12.13.0
+mongo: 3.6
 
-## Running the Project.
+Clone down and in the project directory create a `.env` file with the following items:
 
-To run this project first run `npm install`. Note: If you generated this project via the Keystone cli step this has been done for you \\o/.
+```
+MONGO_URL="mongodb://localhost/homebase"
+CAMPAIGN_MONITOR_KEY="<YOUR CAPAIGN MONITOR API KEY>"
+NODE_ENV="development"
+DISABLE_LOGGING=true
+```
 
-Once running, the Keystone Admin UI is reachable via `localhost:3000/admin`.
+Do a `yarn install` to install dependencies
 
-## Next steps
+# Running The Project
 
-This example has no front-end application but you can build your own using the GraphQL API (`http://localhost:3000/admin/graphiql`).
+Inside the project directory run `yarn dev` to spin up the admin interface.

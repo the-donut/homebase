@@ -20,7 +20,7 @@ const TagSchema = require('./lists/Tag.js');
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
 const PROJECT_NAME = 'Homebase';
-const adapterConfig = { mongoUri: 'mongodb://localhost/homebase' };
+const adapterConfig = { mongoUri: process.env.MONGO_URL };
 
 const keystone = new Keystone({
   name: PROJECT_NAME,
