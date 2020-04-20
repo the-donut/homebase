@@ -6,6 +6,7 @@ const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
 const { Text, Checkbox, Password } = require('@keystonejs/fields');
 const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
+const { StaticApp } = require('@keystonejs/app-static');
 const initialiseData = require('./initial-data');
 
 const NewsletterSchema = require('./lists/Newsletter.js');
@@ -16,6 +17,7 @@ const SegmentSchema = require('./lists/Segment.js');
 const ListSchema = require('./lists/List.js');
 const ClientSchema = require('./lists/Client.js');
 const TagSchema = require('./lists/Tag.js');
+const ArticleTypeSchema = require('./lists/ArticleType.js');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
@@ -53,6 +55,7 @@ keystone.createList('Segment', SegmentSchema);
 keystone.createList('List', ListSchema);
 keystone.createList('Client', ClientSchema);
 keystone.createList('Tag', TagSchema);
+keystone.createList('ArticleType', ArticleTypeSchema);
 
 // todo: move this to a list in the directory for lists
 keystone.createList('User', {
@@ -90,10 +93,14 @@ module.exports = {
   keystone,
   apps: [
     new GraphQLApp(),
+    new StaticApp({
+      path: '/',
+      src: 'assets'
+    }),
     new AdminUIApp({
       enableDefaultRoute: true,
-      authStrategy
+      authStrategy,
+      hooks: require.resolve('./custom-hooks')
     }),
-    // new NextApp({ dir: 'app' })
   ],
 };

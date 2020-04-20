@@ -15,17 +15,15 @@ module.exports = {
         menubar: false
       }
     },
-    isComplete: {
-      type: Checkbox,
-      defaultValue: false,
-    },
     tags: {
       type: Relationship,
       ref: 'Tag',
       many: true
     },
-    link: {
-      type: Url
+    type: {
+      type: Relationship,
+      ref: 'ArticleType',
+      many: false
     }
   },
   labelField: 'title',

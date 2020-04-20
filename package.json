@@ -18,18 +18,17 @@
   },
   "dependencies": {
     "@keystonejs/adapter-mongoose": "^8.0.0",
-    "@keystonejs/app-admin-ui": "^5.9.5",
+    "@keystonejs/app-admin-ui": "^5.10.0",
     "@keystonejs/app-graphql": "^5.1.5",
     "@keystonejs/app-next": "^5.1.2",
+    "@keystonejs/app-static": "^5.1.2",
     "@keystonejs/auth-password": "^5.1.5",
     "@keystonejs/field-content": "^5.4.5",
     "@keystonejs/fields": "^9.0.0",
     "@keystonejs/fields-wysiwyg-tinymce": "^5.2.3",
     "@keystonejs/keystone": "^8.0.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "cross-env": "^7.0.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "react": "^16.13.1"
   }
 }

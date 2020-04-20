@@ -8,16 +8,13 @@ module.exports = {
       isUnique: true
     },
     Name: {
-      type: Text,
-      isRequired: true
+      type: Text
     },
     PreviewURL: {
-      type: Text,
-      isRequired: true
+      type: Text
     },
     ScreenshotURL: {
-      type: Text,
-      isRequired: true
+      type: Text
     }
   },
   labelField: 'Name',

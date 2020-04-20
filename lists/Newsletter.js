@@ -1,5 +1,5 @@
-const fs = require('fs');
 const { Text, Checkbox, DateTime, Relationship } = require('@keystonejs/fields');
+const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
 
 const SENDER_NAME = 'the DONUT';
 const SENDER_EMAIL = 'kevin@robo-house.com';
@@ -14,6 +14,26 @@ module.exports = {
       type: Text,
       isRequired: true,
     },
+    preheader: {
+      type: Text,
+      isRequired: true
+    },
+    introTitle: {
+      type: Text,
+      isRequired: true
+    },
+    intro: {
+      type: Text,
+      isRequired: true
+    },
+    quote: {
+      type: Text,
+      isRequired: true
+    },
+    quoteAuthor: {
+      type: Text,
+      isRequired: true
+    },
     sendDate: {
       type: DateTime,
       isRequired: true
@@ -24,10 +44,35 @@ module.exports = {
       many: false,
       isRequired: true,
     },
-    articles: {
+    doseOfDiscussion: {
       type: Relationship,
       ref: 'Article',
-      many: true
+      many: false
+    },
+    politicsAndCurrentEvents: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
+    },
+    BizTechAndEconomy: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
+    },
+    DoseOfPositive: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
+    },
+    DoseOfRandom: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
+    },
+    DoseOfKnowledge: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
     },
     template: {
       type: Relationship,
@@ -52,9 +97,6 @@ module.exports = {
       many: false,
       require: true
     },
-    campaign: {
-      type: Text
-    },
     sendPreview: {
       type: Checkbox,
       defaultValue: false,
@@ -71,6 +113,12 @@ module.exports = {
           Newsletter(where: { id: $id } ) {
             id
             subject
+            preheader
+            introTitle
+            intro
+            quote
+            quoteAuthor
+            sendDate
             template {
               TemplateID
             }
@@ -86,6 +134,48 @@ module.exports = {
             client {
               ClientID
             }
+            doseOfDiscussion {
+              title
+              content
+              tags {
+                name
+              }
+            }
+            politicsAndCurrentEvents {
+              title
+              content
+              tags {
+                name
+              }
+            }
+            BizTechAndEconomy {
+              title
+              content
+              tags {
+                name
+              }
+            }
+            DoseOfPositive {
+              title
+              content
+              tags {
+                name
+              }
+            }
+            DoseOfRandom {
+              title
+              content
+              tags {
+                name
+              }
+            }
+            DoseOfKnowledge {
+              title
+              content
+              tags {
+                name
+              }
+            }
           }
         }
       `
@@ -94,8 +184,17 @@ module.exports = {
         variables: { id: req.updatedItem.id },
       };
 
-      const { errors, data } = await req.actions.query(GET_NEWSLETTER_DETAILS, options);
+      const { errors, data } = await req.actions.query(GET_NEWSLETTER_DETAILS, {
+        variables: {
+          id: req.updatedItem.id
+        }
+      });
+
       const newsletter = data.Newsletter;
+
+      if(errors) {
+        console.log("error!", errors)
+      }
 
       const jsonContent = JSON.stringify({
         "Name": newsletter.subject,
@@ -109,47 +208,59 @@ module.exports = {
         "TemplateContent": {
           "Singlelines": [
             {
-              "Content": "This is a heading",
-              "Href": "http://example.com/"
+              "Content": new Date(newsletter.sendDate).toLocaleDateString()
+            },{
+              "Content": newsletter.introTitle
+            },{
+              "Content": newsletter.doseOfDiscussion.title
             }
           ],
           "Multilines": [
             {
-              "Content": "<p>This is example</p><p>multiline <a href='http://example.com'>content</a>...</p>"
-            }
-          ],
-          "Images": [
-            {
-              "Content": "https://via.placeholder.com/150.jpg",
-              "Alt": "This is alt text for an image",
-              "Href": "http://example.com/"
+              "Content": `
+                <span
+                  style="display:none;visibility:hidden;opacity:0;color:transparent;height:0;width:0"
+                >
+                  ${newsletter.preheader}
+                  &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+                  &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+                </span>
+              `
+            },{
+              "Content": `
+                <p
+                  class="staybig"
+                  style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;line-height:32px;color:#d1cdd0;font-size:20px"
+                >
+                  ${newsletter.intro}
+                </p>`
+            },{
+              "Content": `
+                <p
+                  class="staymedium"
+                  style="Margin:0;padding-left:20px;padding-right:20px;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;line-height:28px;color:#d1cdd0;font-size:16px"
+                >
+                  <em>"${newsletter.quote}"<br/>-&nbsp;<b style="color:#ffffff">${newsletter.quoteAuthor}</b></em>
+                </p>
+              `
             }
           ],
           "Repeaters": [
             {
               "Items": [
                 {
-                  "Layout": "My layout",
-                  "Singlelines": [
-                    {
-                      "Content": "This is a repeater heading",
-                      "Href": "http://example.com/"
-                    }
-                  ],
                   "Multilines": [
                     {
-                      "Content": "<p>This is example</p><p>multiline <a href='http://example.com'>content</a>...</p>"
-                    }
-                  ],
-                  "Images": [
-                    {
-                      "Content": "https://via.placeholder.com/150.jpg",
-                      "Alt": "This is alt text for a repeater image",
-                      "Href": "http://example.com/"
+                      "Content": newsletter.doseOfDiscussion.content
                     }
                   ]
                 }
               ]
+            }
+          ],
+          "Images": [
+            {
+              // first (and only?) image is the header image, TODO: set up s3 buckets for image uploads
             }
           ]
         }
