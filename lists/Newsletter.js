@@ -89,6 +89,11 @@ module.exports = {
       ref: 'Article',
       many: false
     },
+    DoseOfKnowledgeAnswer: {
+      type: Relationship,
+      ref: 'Article',
+      many: false
+    },
     template: {
       type: Relationship,
       ref: 'Template',
@@ -193,6 +198,9 @@ module.exports = {
               tags {
                 name
               }
+            }
+            DoseOfKnowledgeAnswer {
+              content
             }
           }
         }

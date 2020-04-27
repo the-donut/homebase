@@ -132,7 +132,8 @@ module.exports = async keystone => {
     "Biz, Tech, and Economy",
     "Dose of Positive",
     "Dose of Random",
-    "Dose of Knowledge"
+    "Dose of Knowledge",
+    "Dose of Knowledge Answer"
   ]
 
   types.forEach(async type => {

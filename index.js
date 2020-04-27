@@ -21,7 +21,7 @@ const ArticleTypeSchema = require('./lists/ArticleType.js');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
-const PROJECT_NAME = 'Homebase';
+const PROJECT_NAME = 'The DONUT Homebase';
 const adapterConfig = { mongoUri: process.env.MONGO_URL };
 
 const keystone = new Keystone({
