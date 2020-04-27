@@ -1,6 +1,5 @@
-const { Text, Checkbox, Relationship, Url } = require('@keystonejs/fields');
+const { Text, Relationship } = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
-
 
 module.exports = {
   fields: {

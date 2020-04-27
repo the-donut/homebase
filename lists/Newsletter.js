@@ -1,8 +1,19 @@
-const { Text, Checkbox, DateTime, Relationship } = require('@keystonejs/fields');
-const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce');
+const { Text, Checkbox, DateTime, Relationship, File } = require('@keystonejs/fields');
+const { S3Adapter } = require('@keystonejs/file-adapters');
 
+const CF_DISTRIBUTION_ID = 'd2a9wahbz2pglr';
+const S3_PATH = 'cms/uploads';
 const SENDER_NAME = 'the DONUT';
 const SENDER_EMAIL = 'kevin@robo-house.com';
+
+const fileAdapter = new S3Adapter({
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: 'us-east-1',
+  bucket: 'mydonut',
+  folder: S3_PATH,
+  publicUrl: ({ id, filename, _meta }) => `https://${CF_DISTRIBUTION_ID}.cloudfront.net/${S3_PATH}/${filename}`
+});
 
 module.exports = {
   fields: {
@@ -13,6 +24,10 @@ module.exports = {
     description: {
       type: Text,
       isRequired: true,
+    },
+    image: {
+      type: File,
+      adapter: fileAdapter
     },
     preheader: {
       type: Text,
@@ -119,6 +134,9 @@ module.exports = {
             quote
             quoteAuthor
             sendDate
+            image {
+              publicUrl
+            }
             template {
               TemplateID
             }
@@ -213,6 +231,8 @@ module.exports = {
               "Content": newsletter.introTitle
             },{
               "Content": newsletter.doseOfDiscussion.title
+            }, {
+              "Content": newsletter.DoseOfKnowledge.title
             }
           ],
           "Multilines": [
@@ -243,6 +263,27 @@ module.exports = {
                   <em>"${newsletter.quote}"<br/>-&nbsp;<b style="color:#ffffff">${newsletter.quoteAuthor}</b></em>
                 </p>
               `
+            },{
+              "Content": `
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://thedonut.co/latest#dose-of-discussion" target="_blank" style="margin:5px;display:inline-block">
+                  <img src="/csimport/section-share-fb_4.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
+                </a>
+                <a href="https://twitter.com/home?status=https://thedonut.co/latest#dose-of-discussion Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day" target="_blank" style="margin:5px;display:inline-block">
+                  <img src="/csimport/section-share-twitter_5.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://thedonut.co/latest#dose-of-discussion&title=&summary=Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day&source=" target="_blank" style="margin:5px;display:inline-block">
+                  <img src="/csimport/section-share-linkedin_6.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
+                </a>
+                <a href="mailto:info@example.com?&subject=&body=https://thedonut.co/latest#dose-of-discussion Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day" target="_blank" style="margin:5px;display:inline-block">
+                  <img src="/csimport/section-share-email_7_7.jpg" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
+                </a>
+              `
+            }, {
+              "Content": `
+                <p style="Margin:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;line-height:22px;color:#00292d;font-size:14px">
+                  ${newsletter.DoseOfKnowledge.content}
+                </p>
+              `
             }
           ],
           "Repeaters": [
@@ -256,11 +297,53 @@ module.exports = {
                   ]
                 }
               ]
+            },{
+              "Items": [
+                {
+                  "Multilines": [
+                    {
+                      "Content": newsletter.politicsAndCurrentEvents.content
+                    }
+                  ]
+                }
+              ]
+            },{
+              "Items": [
+                {
+                  "Multilines": [
+                    {
+                      "Content": newsletter.BizTechAndEconomy.content
+                    },
+                  ]
+                }
+              ]
+            },{
+              "Items": [
+                {
+                  "Multilines": [
+                    {
+                      "Content": newsletter.DoseOfPositive.content
+                    },
+                  ]
+                }
+              ]
+            },{
+              "Items": [
+                {
+                  "Multilines": [
+                    {
+                      "Content": newsletter.DoseOfRandom.content
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "Images": [
             {
-              // first (and only?) image is the header image, TODO: set up s3 buckets for image uploads
+              "Content": newsletter.image.publicUrl,
+              "Alt": newsletter.introTitle,
+              "Href": newsletter.image.publicUrl
             }
           ]
         }
