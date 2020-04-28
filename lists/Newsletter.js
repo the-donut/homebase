@@ -17,13 +17,21 @@ const fileAdapter = new S3Adapter({
 
 module.exports = {
   fields: {
+    name: {
+      type: Text,
+      isRequired: true,
+      isUnique: true,
+      adminDoc: 'The name of the campaign used in Campaign Monitor'
+    },
     subject: {
       type: Text,
-      isRequired: true
+      isRequired: true,
+      adminDoc: 'The subject line of the campaign that will appear in subscribers inboxes'
     },
     description: {
       type: Text,
       isRequired: true,
+      adminDoc: 'An internal descriptor field'
     },
     image: {
       type: File,
@@ -117,14 +125,11 @@ module.exports = {
       many: false,
       require: true
     },
-    sendPreview: {
-      type: Checkbox,
-      defaultValue: false,
-    },
-    sendComplete: {
-      type: Checkbox,
-      defaultValue: false,
-    },
+    tags: {
+      type: Relationship,
+      ref: 'Tag',
+      many: true
+    }
   },
   hooks: {
     afterChange: async (req) => {
@@ -132,6 +137,7 @@ module.exports = {
         query getNewsletterDetails($id: ID!) {
           Newsletter(where: { id: $id } ) {
             id
+            name
             subject
             preheader
             introTitle
@@ -223,7 +229,7 @@ module.exports = {
       }
 
       const jsonContent = JSON.stringify({
-        "Name": newsletter.subject,
+        "Name": newsletter.name,
         "Subject": newsletter.subject,
         "FromName": SENDER_NAME,
         "FromEmail": SENDER_EMAIL,
@@ -357,21 +363,79 @@ module.exports = {
         }
       });
 
-      // create campaign in campaign monitor
-      const createCampaignUrl = `https://api.createsend.com/api/v3.2/campaigns/${newsletter.client.ClientID}/fromtemplate.json`
-      fetch(createCampaignUrl, {
-        method: 'POST',
-        body: jsonContent,
+      // get current scheduled campaigns to see if this one already exists or not
+      // if it does exist we just want to update it
+      const getScheduledCampaigns = `https://api.createsend.com/api/v3.2/clients/${newsletter.client.ClientID}/scheduled.json`;
+      const getDraftCampaigns = `https://api.createsend.com/api/v3.2/clients/${newsletter.client.ClientID}/drafts.json`;
+      const allCampaigns = [];
+      const campaignNames = [];
+
+      fetch(getScheduledCampaigns, {
         headers: {
           Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
         }
-      }).then(resp => resp.json()).then(json => {
-        console.log(json)
-      }).catch((e) => {
-        console.log('error:', e)
+      }).then(resp => resp.json()).then(scheduledCampaigns => {
+        allCampaigns.push(scheduledCampaigns)
+        fetch(getDraftCampaigns, {
+          headers: {
+            Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
+          }
+        }).then(resp => resp.json()).then(draftCampaigns => {
+          allCampaigns.push(draftCampaigns)
+
+          const flattenedCampaigns = [].concat(...allCampaigns);
+
+          flattenedCampaigns.forEach(campaign => {
+            campaignNames.push(campaign.Name)
+          })
+
+          if(campaignNames.includes(newsletter.name)) {
+
+            /**
+             * Unfortunately campaign monitors API does not actually have an update endpoint
+             * So we have to DELETE the campaign first and recreate it
+             */
+            const campaignToDelete = flattenedCampaigns.find(campaign => campaign.Name === newsletter.name);
+
+            console.log('This campaign already exists in Campaign Monitor, re-creating instead...')
+
+            const deleteCampaignUrl = `https://api.createsend.com/api/v3.2/campaigns/${campaignToDelete.CampaignID}.json`
+            fetch(deleteCampaignUrl, {
+              method: 'DELETE',
+              headers: {
+                Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
+              }
+            }).then(resp => {
+              if(resp.status === 200) createCampaign(newsletter.client.ClientID, jsonContent)
+            })
+
+          } else {
+            createCampaign(newsletter.client.ClientID, jsonContent)
+          }
+        })
       })
 
     },
   },
-  labelField: 'subject',
+  labelField: 'name',
 };
+
+/**
+ * Creates a new campaign in Campaign Monitor provided a client ID and the JSON for the new campaign
+ * @param {String} clientId
+ * @param {Object} jsonContent
+ */
+const createCampaign = (clientId, jsonContent) => {
+  const createCampaignUrl = `https://api.createsend.com/api/v3.2/campaigns/${clientId}/fromtemplate.json`
+  fetch(createCampaignUrl, {
+    method: 'POST',
+    body: jsonContent,
+    headers: {
+      Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
+    }
+  }).then(resp => resp.json()).then(json => {
+    console.log('Campaign created in Campaign Monitor:', json);
+  }).catch((e) => {
+    console.log('Error creating campaign in Campaign Monitor:', e)
+  })
+}
