@@ -27,9 +27,7 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData,
-  secureCookies: true,
-  cookieSecret: 'donut-cms'
+  onConnect: initialiseData
 });
 
 // Access control functions
