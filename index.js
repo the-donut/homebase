@@ -19,6 +19,10 @@ const ClientSchema = require('./lists/Client.js');
 const TagSchema = require('./lists/Tag.js');
 const ArticleTypeSchema = require('./lists/ArticleType.js');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const sessionStore = new MongoStore({url: process.env.MONGO_URL});
+
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
 const PROJECT_NAME = 'The DONUT Homebase';
@@ -94,7 +98,7 @@ const authStrategy = keystone.createAuthStrategy({
 module.exports = {
   keystone,
   apps: [
-    new GraphQLApp(),
+    new GraphQLApp({ sessionStore }),
     new StaticApp({
       path: '/',
       src: 'assets'
@@ -104,8 +108,5 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ],
-  configureExpress: app => {
-    app.set('trust proxy', 1);
-  }
+  ]
 };
