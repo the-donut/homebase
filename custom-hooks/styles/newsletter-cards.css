@@ -1,0 +1,36 @@
+.newsletter-card {
+  width: 50%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  position: relative;
+}
+
+.newsletter-card img {
+  width: 100%;
+}
+
+.send-preview-modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 100;
+  background: rgba(0,0,0,.5);
+  top: 0;
+  left: 0;
+  display: flex;
+}
+
+.preview-content {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: #fff;
+}
+
+.preview-content label,
+.preview-content input {
+  margin-bottom: 10px;
+}

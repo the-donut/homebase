@@ -129,6 +129,9 @@ module.exports = {
       type: Relationship,
       ref: 'Tag',
       many: true
+    },
+    campaignId: {
+      type: Text
     }
   },
   hooks: {
@@ -298,6 +301,12 @@ module.exports = {
                   ${newsletter.DoseOfKnowledge.content}
                 </p>
               `
+            }, {
+              "Content": `
+                <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;color:#fff !important;font-size:14px;line-height:22px">
+                  ${newsletter.DoseOfKnowledgeAnswer.content}
+                </p>
+              `
             }
           ],
           "Repeaters": [
@@ -406,11 +415,11 @@ module.exports = {
                 Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
               }
             }).then(resp => {
-              if(resp.status === 200) createCampaign(newsletter.client.ClientID, jsonContent)
+              if(resp.status === 200) createCampaign(newsletter.client.ClientID, jsonContent, newsletter.id, req.actions.query)
             })
 
           } else {
-            createCampaign(newsletter.client.ClientID, jsonContent)
+            createCampaign(newsletter.client.ClientID, jsonContent, newsletter.id, req.actions.query)
           }
         })
       })
@@ -425,7 +434,7 @@ module.exports = {
  * @param {String} clientId
  * @param {Object} jsonContent
  */
-const createCampaign = (clientId, jsonContent) => {
+const createCampaign = (clientId, jsonContent, newsletterId, query) => {
   const createCampaignUrl = `https://api.createsend.com/api/v3.2/campaigns/${clientId}/fromtemplate.json`
   fetch(createCampaignUrl, {
     method: 'POST',
@@ -433,8 +442,22 @@ const createCampaign = (clientId, jsonContent) => {
     headers: {
       Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
     }
-  }).then(resp => resp.json()).then(json => {
+  }).then(resp => resp.json()).then(async json => {
     console.log('Campaign created in Campaign Monitor:', json);
+    const UPDATE_NEWSLETTER_ID = `mutation updateNewsletter($id: ID!, $data: NewsletterUpdateInput) {
+      updateNewsletter(id: $id, data: $data){
+        id
+      }
+    }`
+
+    const { errors, data } = await query(UPDATE_NEWSLETTER_ID, {
+      variables: {
+        id: newsletterId,
+        data: {
+          campaignId: json
+        }
+      }
+    });
   }).catch((e) => {
     console.log('Error creating campaign in Campaign Monitor:', e)
   })

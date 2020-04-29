@@ -11,13 +11,14 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "dev": "keystone dev",
+    "dev": "node server.js",
     "build": "cross-env NODE_ENV=production keystone build",
     "start": "cross-env NODE_ENV=production keystone start",
     "create-tables": "keystone create-tables"
   },
   "dependencies": {
     "@keystonejs/adapter-mongoose": "^8.0.0",
+    "@keystonejs/apollo-helpers": "^5.1.4",
     "@keystonejs/app-admin-ui": "^5.10.0",
     "@keystonejs/app-graphql": "^5.1.5",
     "@keystonejs/app-next": "^5.1.2",
@@ -28,8 +29,11 @@
     "@keystonejs/fields-wysiwyg-tinymce": "^5.2.3",
     "@keystonejs/file-adapters": "^6.0.1",
     "@keystonejs/keystone": "^8.0.0",
+    "apollo-link-http": "^1.5.17",
     "cross-env": "^7.0.0",
     "dotenv": "^8.2.0",
-    "react": "^16.13.1"
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-apollo": "^3.1.5"
   }
 }
