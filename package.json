@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "cross-env NODE_ENV=production keystone build",
-    "start": "node server.js",
+    "start": "node --trace-warnings server.js",
     "create-tables": "keystone create-tables"
   },
   "dependencies": {
