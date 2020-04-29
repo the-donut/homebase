@@ -2,9 +2,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-
 const { keystone, apps } = require('./index.js');
 
 keystone
@@ -16,12 +13,6 @@ keystone
     await keystone.connect();
     const app = express();
     app.use(express.json()) // allow json content
-    app.use(session({
-      secret: 'donutcms',
-      store: new MongoStore({url: process.env.MONGO_URL}),
-      resave: true,
-      saveUninitialized: true
-    }));
 
     // TODO: if things grow more in the custom server here we'll want to break this out
     // to be in a routes directory, models, etc
