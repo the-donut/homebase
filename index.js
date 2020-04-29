@@ -8,9 +8,6 @@ const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
 const { StaticApp } = require('@keystonejs/app-static');
 
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-
 const initialiseData = require('./initial-data');
 
 const NewsletterSchema = require('./lists/Newsletter.js');
@@ -31,11 +28,7 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData,
-  secret: 'donutcms',
-  store: new MongoStore({url: process.env.MONGO_URL}),
-  resave: true,
-  saveUninitialized: true
+  onConnect: initialiseData
 });
 
 // Access control functions
@@ -110,8 +103,5 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ],
-  configureExpress: app => {
-    app.set('trust proxy', 1);
-  }
+  ]
 };
