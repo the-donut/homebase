@@ -15,18 +15,8 @@ export default {
       children: [
         { listKey: 'Newsletter' },
         { listKey: 'Article' },
-        { listKey: 'ArticleType' },
         { listKey: 'Tag' }
       ],
-    },{
-      label: 'Campaign Monitor',
-      children: [
-        { listKey: 'Client' },
-        { listKey: 'List' },
-        { listKey: 'Segment' },
-        { listKey: 'Template' },
-        { listKey: 'Vertical' },
-      ]
     },{
       label: 'Admin',
       children: [

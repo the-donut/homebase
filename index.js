@@ -28,6 +28,8 @@ const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
   onConnect: initialiseData,
+  secureCookies: true,
+  cookieSecret: 'donut-cms'
 });
 
 // Access control functions
@@ -102,5 +104,5 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ],
+  ]
 };

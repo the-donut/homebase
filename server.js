@@ -12,7 +12,11 @@ keystone
   .then(async ({ middlewares }) => {
     await keystone.connect();
     const app = express();
-    app.use(express.json())
+    app.use(express.json()) // allow json content
+    app.set('trust proxy', 1); // allow secure cookies to be used
+
+    // TODO: if things grow more in the custom server here we'll want to break this out
+    // to be in a routes directory, models, etc
 
     /**
      * Sends a campaign preview provided a recipient address and campaign id
