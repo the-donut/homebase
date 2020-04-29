@@ -10,7 +10,6 @@ const { StaticApp } = require('@keystonejs/app-static');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const sessionStore = new MongoStore({url: process.env.MONGO_URL});
 
 const initialiseData = require('./initial-data');
 
@@ -32,7 +31,8 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData
+  onConnect: initialiseData,
+  sessionStore: new MongoStore({ url: process.env.MONGO_URL }),
 });
 
 // Access control functions
@@ -97,9 +97,7 @@ const authStrategy = keystone.createAuthStrategy({
 module.exports = {
   keystone,
   apps: [
-    new GraphQLApp({
-      sessionStore
-    }),
+    new GraphQLApp(),
     new StaticApp({
       path: '/',
       src: 'assets'
