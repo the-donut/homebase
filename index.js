@@ -28,7 +28,9 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData
+  onConnect: initialiseData,
+  secureCookies: true,
+  cookieSecret: 'mydonut'
 });
 
 // Access control functions
@@ -103,5 +105,8 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ]
+  ],
+  configureExpress: app => {
+    app.set('trust proxy', true);
+  }
 };
