@@ -8,6 +8,10 @@ const { GraphQLApp } = require('@keystonejs/app-graphql');
 const { AdminUIApp } = require('@keystonejs/app-admin-ui');
 const { StaticApp } = require('@keystonejs/app-static');
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const sessionStore = new MongoStore({url: process.env.MONGO_URL});
+
 const initialiseData = require('./initial-data');
 
 const NewsletterSchema = require('./lists/Newsletter.js');
@@ -28,9 +32,7 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData,
-  secureCookies: true,
-  cookieSecret: 'mydonut'
+  onConnect: initialiseData
 });
 
 // Access control functions
@@ -95,7 +97,9 @@ const authStrategy = keystone.createAuthStrategy({
 module.exports = {
   keystone,
   apps: [
-    new GraphQLApp(),
+    new GraphQLApp({
+      sessionStore
+    }),
     new StaticApp({
       path: '/',
       src: 'assets'
@@ -105,8 +109,5 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ],
-  configureExpress: app => {
-    app.set('trust proxy', true);
-  }
+  ]
 };
