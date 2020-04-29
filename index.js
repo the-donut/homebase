@@ -19,10 +19,6 @@ const ClientSchema = require('./lists/Client.js');
 const TagSchema = require('./lists/Tag.js');
 const ArticleTypeSchema = require('./lists/ArticleType.js');
 
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const sessionStore = new MongoStore({url: process.env.MONGO_URL});
-
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
 const PROJECT_NAME = 'The DONUT Homebase';
@@ -31,9 +27,7 @@ const adapterConfig = { mongoUri: process.env.MONGO_URL };
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
-  onConnect: initialiseData,
-  secureCookies: true,
-  cookieSecret: 'donut-cms'
+  onConnect: initialiseData
 });
 
 // Access control functions
@@ -98,7 +92,7 @@ const authStrategy = keystone.createAuthStrategy({
 module.exports = {
   keystone,
   apps: [
-    new GraphQLApp({ sessionStore }),
+    new GraphQLApp(),
     new StaticApp({
       path: '/',
       src: 'assets'
