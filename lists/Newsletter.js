@@ -355,7 +355,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.DoseOfRandom. ? newsletter.DoseOfRandom.content : ''
+                      "Content": newsletter.DoseOfRandom ? newsletter.DoseOfRandom.content : ''
                     }
                   ]
                 }
