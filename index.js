@@ -109,8 +109,5 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ],
-  configureExpress: app => {
-    app.set('trust proxy', 1);
-  }
+  ]
 };
