@@ -36,5 +36,5 @@ keystone
       })
     })
 
-    app.use(middlewares).listen(3000);
+    app.use(middlewares).listen(process.env.PORT);
   });
