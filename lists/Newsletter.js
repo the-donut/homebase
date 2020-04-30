@@ -247,9 +247,9 @@ module.exports = {
             },{
               "Content": newsletter.introTitle
             },{
-              "Content": newsletter.doseOfDiscussion.title
+              "Content": newsletter.doseOfDiscussion ? newsletter.doseOfDiscussion.title : ''
             }, {
-              "Content": newsletter.DoseOfKnowledge.title
+              "Content": newsletter.DoseOfKnowledge ? newsletter.DoseOfKnowledge.title : ''
             }
           ],
           "Multilines": [
@@ -298,13 +298,13 @@ module.exports = {
             }, {
               "Content": `
                 <p style="Margin:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;line-height:22px;color:#00292d;font-size:14px">
-                  ${newsletter.DoseOfKnowledge.content}
+                  ${newsletter.DoseOfKnowledge ? newsletter.DoseOfKnowledge.content : ''}
                 </p>
               `
             }, {
               "Content": `
                 <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;color:#fff !important;font-size:14px;line-height:22px">
-                  ${newsletter.DoseOfKnowledgeAnswer.content}
+                  ${newsletter.DoseOfKnowledgeAnswer ? newsletter.DoseOfKnowledgeAnswer.content : ''}
                 </p>
               `
             }
@@ -315,7 +315,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.doseOfDiscussion.content
+                      "Content": newsletter.doseOfDiscussion ? newsletter.doseOfDiscussion.content : ''
                     }
                   ]
                 }
@@ -325,7 +325,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.politicsAndCurrentEvents.content
+                      "Content": newsletter.politicsAndCurrentEvents ? newsletter.politicsAndCurrentEvents.content : ''
                     }
                   ]
                 }
@@ -335,7 +335,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.BizTechAndEconomy.content
+                      "Content": newsletter.BizTechAndEconomy ? newsletter.BizTechAndEconomy.content : ''
                     },
                   ]
                 }
@@ -345,7 +345,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.DoseOfPositive.content
+                      "Content": newsletter.DoseOfPositive ? newsletter.DoseOfPositive.content : ''
                     },
                   ]
                 }
@@ -355,7 +355,7 @@ module.exports = {
                 {
                   "Multilines": [
                     {
-                      "Content": newsletter.DoseOfRandom.content
+                      "Content": newsletter.DoseOfRandom. ? newsletter.DoseOfRandom.content : ''
                     }
                   ]
                 }
