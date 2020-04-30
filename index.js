@@ -32,7 +32,9 @@ const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),
   onConnect: initialiseData,
-  sessionStore: new MongoStore({ url: process.env.MONGO_URL }),
+  sessionStore: new MongoStore({
+    url: process.env.MONGO_URL
+  }),
 });
 
 // Access control functions
@@ -107,5 +109,8 @@ module.exports = {
       authStrategy,
       hooks: require.resolve('./custom-hooks')
     }),
-  ]
+  ],
+  configureExpress: app => {
+    app.set('trust proxy', 1);
+  }
 };
