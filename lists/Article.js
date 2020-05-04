@@ -7,7 +7,7 @@ const { getNewsletterDetails, createJsonContent, updateCampaignMonitor } = requi
 const { S3Adapter } = require('@keystonejs/file-adapters');
 
 const CF_DISTRIBUTION_ID = 'd2a9wahbz2pglr';
-const S3_PATH = 'cms/uploads';
+const S3_PATH = 'cms/uploads/articles';
 
 const fileAdapter = new S3Adapter({
   accessKeyId: process.env.ACCESS_KEY_ID,
