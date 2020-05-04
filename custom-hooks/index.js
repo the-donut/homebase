@@ -14,6 +14,7 @@ export default {
       label: 'Newsletters',
       children: [
         { listKey: 'Newsletter' },
+        { listKey: 'Sponsor' },
         { listKey: 'Article' },
         { listKey: 'Tag' }
       ],

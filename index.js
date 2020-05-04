@@ -22,6 +22,7 @@ const ListSchema = require('./lists/List.js');
 const ClientSchema = require('./lists/Client.js');
 const TagSchema = require('./lists/Tag.js');
 const ArticleTypeSchema = require('./lists/ArticleType.js');
+const SponsorSchema = require('./lists/Sponsor.js');
 
 const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 
@@ -63,6 +64,7 @@ keystone.createList('List', ListSchema);
 keystone.createList('Client', ClientSchema);
 keystone.createList('Tag', TagSchema);
 keystone.createList('ArticleType', ArticleTypeSchema);
+keystone.createList('Sponsor', SponsorSchema);
 
 // todo: move this to a list in the directory for lists
 keystone.createList('User', {
