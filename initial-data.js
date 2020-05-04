@@ -21,6 +21,7 @@ module.exports = async keystone => {
       Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
     }
   }).then(resp => resp.json()).then(async json => {
+    console.log(process.env)
     console.log('JSON:', json)
     json.forEach(async cmClient => {
       const clientId = cmClient.ClientID
