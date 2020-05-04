@@ -148,21 +148,6 @@ const createJsonContent = async (newsletter) => {
               <em>"${newsletter.quote}"<br/>-&nbsp;<b style="color:#ffffff">${newsletter.quoteAuthor}</b></em>
             </p>
           `
-        },{
-          "Content": `
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://thedonut.co/latest#dose-of-discussion" target="_blank" style="margin:5px;display:inline-block">
-              <img src="/csimport/section-share-fb_4.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
-            </a>
-            <a href="https://twitter.com/home?status=https://thedonut.co/latest#dose-of-discussion Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day" target="_blank" style="margin:5px;display:inline-block">
-              <img src="/csimport/section-share-twitter_5.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
-            </a>
-            <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://thedonut.co/latest#dose-of-discussion&title=&summary=Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day&source=" target="_blank" style="margin:5px;display:inline-block">
-              <img src="/csimport/section-share-linkedin_6.png" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
-            </a>
-            <a href="mailto:info@example.com?&subject=&body=https://thedonut.co/latest#dose-of-discussion Check out the Daily DONUT's sweet Dose of Discussion coverage today. It's a daily email that delivers just the facts and a 360 view on the news of the day" target="_blank" style="margin:5px;display:inline-block">
-              <img src="/csimport/section-share-email_7_7.jpg" alt="" style="border:0;outline:none;-ms-interpolation-mode:bicubic" width="35">
-            </a>
-          `
         }, {
           "Content": `
             <p style="Margin:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-line-height-rule:exactly;font-family:'poppins','helvetica neue',helvetica,arial,sans-serif;line-height:22px;color:#00292d;font-size:14px">
