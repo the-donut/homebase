@@ -21,7 +21,7 @@ keystone
     /**
      * Sends a campaign preview provided a recipient address and campaign id
      */
-    app.post('/admin/sendCampaignPreview', (req, res) => {
+    app.post('/admin/sendNewsletterPreview', (req, res) => {
       const campaignId = req.body.campaignId;
       const campaignPreviewUrl = `https://api.createsend.com/api/v3.2/campaigns/${campaignId}/sendpreview.json`
       fetch(campaignPreviewUrl, {

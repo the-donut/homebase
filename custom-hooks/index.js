@@ -1,15 +1,15 @@
 import React from "react"
 
 import DONUTLogo from "./logo";
-import Campaigns from "./campaigns";
+import Newsletters from "./newsletters";
 
 export default {
   logo: () => <DONUTLogo/>,
   pages: () => [
     {
-      label: 'Campaigns',
-      path: 'campaigns',
-      component: Campaigns,
+      label: 'Newsletters Dashboard',
+      path: '/dashboard/newsletters',
+      component: Newsletters,
     },{
       label: 'Newsletters',
       children: [

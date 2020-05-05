@@ -6,7 +6,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import { Query, KeystoneProvider } from '@keystonejs/apollo-helpers';
 
-import CampaignCards from "./CampaignCards";
+import NewsletterCards from "./NewsletterCards";
 
 import "../styles/main.css";
 
@@ -15,7 +15,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export default function Campaigns() {
+export default function Newsletters() {
 
   const GET_DATA = gql`
   {
@@ -24,6 +24,9 @@ export default function Campaigns() {
       campaignId
       name
       sendDate
+      client {
+        ClientID
+      }
       image {
         publicUrl
       }
@@ -35,7 +38,7 @@ export default function Campaigns() {
       <KeystoneProvider>
         <div className="container">
           <div className="header-container">
-            <h1 className="header-text">Campaigns</h1>
+            <h1 className="header-text">Newsletters</h1>
           </div>
           <div className="campaign-container">
             <Query query={GET_DATA}>
@@ -43,7 +46,7 @@ export default function Campaigns() {
                 loading ? (
                   <div>Loading...</div>
                 ) : (
-                  <CampaignCards newsletters={data.allNewsletters} />
+                  <NewsletterCards newsletters={data.allNewsletters} />
                 )
               )}
             </Query>

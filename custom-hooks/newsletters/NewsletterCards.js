@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "../styles/newsletter-cards.css";
 
-export default function CampaignCards(props) {
+export default function NewsletterCards(props) {
   const [promptEmailModal, setPromptEmailModal] = useState(false)
   const [reicipientEmail, setRecipientEmail] = useState('')
   const newsletters = props.newsletters;
@@ -12,7 +12,7 @@ export default function CampaignCards(props) {
   }
 
   const sendPreview = (campaignId) => {
-    fetch('/admin/sendCampaignPreview', {
+    fetch('/admin/sendNewsletterPreview', {
       method: 'POST',
       headers: {
         "content-type": "application/json"
