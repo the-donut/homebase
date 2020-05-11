@@ -2,6 +2,7 @@
 
 const NoActionNoSponsor = require("../templates/NoActionNoSponsor");
 const NoAction = require("../templates/NoAction");
+const NoDibsNoAction = require("../templates/NoDibsNoAction");
 
 const SENDER_NAME = 'the DONUT';
 const SENDER_EMAIL = 'kevin@robo-house.com';
@@ -38,6 +39,15 @@ const getNewsletterDetails = async (query, newsletterId) => {
         client {
           ClientID
         }
+        sponsor {
+          logo {
+            publicUrl
+          }
+          name
+          url
+          content
+        }
+        sponsorIntro
         doseOfDiscussion {
           title
           content
@@ -105,10 +115,13 @@ const createJsonContent = async (newsletter) => {
   // TODO: dynamic for sponsor template
   let templateContent;
 
-  if(newsletter.template.Name === '3.0 No Action') {
+  // TODO: MAKE THESE THE FINAL TEMPLATE ENUMS IMPORTED FROM ANOTHER FILE
+  if(newsletter.template.Name === 'CMS - 3.0 No Action') {
     templateContent = NoAction(newsletter)
-  } else if(newsletter.template.Name === '3.0 No Action No Sponsor') {
+  } else if(newsletter.template.Name === 'CMS - 3.0 No Action No Sponsor') {
     templateContent = NoActionNoSponsor(newsletter);
+  } else if(newsletter.template.Name === 'CMS - 3.0 No Dibs No Action') {
+    templateContent = NoDibsNoAction(newsletter);
   }
 
   const jsonContent = {
@@ -197,7 +210,7 @@ const createCampaign = (clientId, jsonContent, newsletterId, query) => {
       Authorization: `Basic ${process.env.CAMPAIGN_MONITOR_KEY}`
     }
   }).then(resp => resp.json()).then(async json => {
-    console.log('Campaign created in Campaign Monitor:', json);
+    console.log('Campaign created in Campaign Monitor');
     const UPDATE_NEWSLETTER_ID = `mutation updateNewsletter($id: ID!, $data: NewsletterUpdateInput) {
       updateNewsletter(id: $id, data: $data){
         id

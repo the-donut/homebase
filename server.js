@@ -36,6 +36,6 @@ keystone
         res.sendStatus(200)
       })
     })
-
+    console.log('Server up and running 🧨')
     app.use(middlewares).listen(process.env.PORT);
   });

@@ -29,6 +29,8 @@ const { MongooseAdapter: Adapter } = require('@keystonejs/adapter-mongoose');
 const PROJECT_NAME = 'The DONUT Homebase';
 const adapterConfig = { mongoUri: process.env.MONGO_URL };
 
+console.log('Iinitializing Keyston app... 🚁')
+
 const keystone = new Keystone({
   name: PROJECT_NAME,
   adapter: new Adapter(adapterConfig),

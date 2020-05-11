@@ -50,7 +50,7 @@ module.exports = {
       type: Wysiwyg,
       isRequired: true,
       editorConfig: {
-        menubar: false
+        toolbar: "bold italic underline strikethrough | alignleft alignright aligncenter | p h1 h2 h3 h4 fontsize | bullist numlist",
       }
     },
     sponsor: {
@@ -58,6 +58,13 @@ module.exports = {
       ref: 'Sponsor',
       many: false,
       adminDoc: 'Make sure to set the template to allow for sponsors to show'
+    },
+    sponsorIntro: {
+      type: Wysiwyg,
+      isRequired: false,
+      editorConfig: {
+        menubar: false
+      }
     },
     quote: {
       type: Text,
@@ -116,7 +123,7 @@ module.exports = {
       type: Relationship,
       ref: 'Template',
       many: false,
-      require: true
+      isRequired: true
     },
     segment: {
       type: Relationship,
@@ -127,13 +134,13 @@ module.exports = {
       type: Relationship,
       ref: 'List',
       many: false,
-      require: true
+      isRequired: true
     },
     client: {
       type: Relationship,
       ref: 'Client',
       many: false,
-      require: true
+      isRequired: true
     },
     tags: {
       type: Relationship,
@@ -141,6 +148,7 @@ module.exports = {
       many: true
     },
     campaignId: {
+      adminDoc: 'This is not to be filled in as it is populated from Campaign Monitor when the campaign is created in their system',
       type: Text
     }
   },

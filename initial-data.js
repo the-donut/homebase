@@ -2,6 +2,9 @@ const crypto = require('crypto');
 const randomString = () => crypto.randomBytes(6).hexSlice();
 
 module.exports = async keystone => {
+
+  console.log('Beginning sync with Campaign Monitor... 🛸')
+
   // Count existing users
   const {
     data: {
@@ -177,4 +180,6 @@ module.exports = async keystone => {
       Please change these details after initial login.
     `);
   }
+
+  console.log('Data sync complete with Campaign Monitor, starting server now... 🚀')
 };
